@@ -1,11 +1,11 @@
-const express = require('express');
-const quotes_api = express();
+const express = require('express')
+const quotesApi = express()
 
-const port = 8080;
+const port = 8080
 
-quotes_api.get('/', function(req, res) {
-    res.send('Hello World!');
-});
+quotesApi.get('/', function (req, res) {
+  res.send('Hello World!')
+})
 
-quotes_api.listen(port, () => 
-    console.log(`Quotes API listening on port ${port}...`));
+quotesApi.listen(port, () =>
+  console.log(`Quotes API listening on port ${port}...`))
