@@ -1,2 +1,2 @@
 # quotes-app
-A simple node express web app for that returns famous quotations. 
+A simple node express web API for that returns famous quotations. 
