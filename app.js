@@ -1,11 +1,15 @@
 'use strict'
-
+// Needs testing. Needs logging. Needs random support.
 const quotes = require('./quotes.json')
 const express = require('express')
 
 const quotesApi = express()
 
 const port = 8080
+
+quotesApi.get('/', function (req, res) {
+  res.send("OK")
+})
 
 quotesApi.get('/quotes', function (req, res) {
   const summary = ({ name, slug }) => ({ name, slug })
@@ -15,7 +19,11 @@ quotesApi.get('/quotes', function (req, res) {
 
 quotesApi.get('/quotes/:slug', function (req, res) {
   const result = quotes.filter(q => q.slug === req.params['slug'])
-  res.json(result[0].quotes)
+  if (result.length <= 0) {
+    res.sendStatus(404)
+  } else {
+    res.json(result[0].quotes)
+  }
 })
 
 quotesApi.listen(port, () =>
