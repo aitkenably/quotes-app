@@ -15,24 +15,49 @@ quotesDb.init('./data/quotes.csv').then(function (db) {
   // Health check
   quotesApi.get('/', (req, res) => res.send('OK'))
 
-  quotesApi.get('/quotes', function (req, res) {
-    res.json(db.quotes)
+  quotesApi.get('/quotes', (req, res) => res.json(db.quotes))
+  quotesApi.get('/quotes/titles', (req, res) => res.json(db.titles()))
+  quotesApi.get('/quotes/attributions', (req, res) => res.json(db.attributions()))
+  quotesApi.get('/quotes/random', (req, res) => res.json(db.randomQuote()))
+
+  // TODO: Streamline
+  // TODO: Write tests
+  quotesApi.get('/quotes/title/:slug', function (req, res) {
+    const quotes = db.quotesByTitleSlug(req.params.slug)
+    if (quotes.length === 0) {
+      res.send(404)
+    } else {
+      res.json(quotes)
+    }
   })
 
-  quotesApi.get('/quotes/titles', function (req, res) {
-    res.json(db.titles())
+  quotesApi.get('/quotes/title/:slug/random', function (req, res) {
+    const quote = db.randomQuoteByTitleSlug(req.params.slug)
+    if (quote) {
+      res.json(quote)
+    } else {
+      res.send(404)
+    }
+  })
+
+  quotesApi.get('/quotes/attribution/:slug', function (req, res) {
+    const quotes = db.quotesByAttributionSlug(req.params.slug)
+    if (quotes.length === 0) {
+      res.send(404)
+    } else {
+      res.json(quotes)
+    }
+  })
+
+  quotesApi.get('/quotes/attribution/:slug/random', function (req, res) {
+    const quote = db.randomQuoteByAttributionSlug(req.params.slug)
+    if (quote) {
+      res.json(quote)
+    } else {
+      res.send(404)
+    }
   })
 
   quotesApi.listen(port, () =>
     console.log(`Quotes API listening on port ${port}...`))
 })
-
-//  Return random quote                  /quotes/random
-
-//  Return all titles and slugs          /quotes/titles
-//  Return all quotes by title-slug      /quotes/title/:slug
-//  Return random quote by title-slug    /quotes/title/:slug/random
-
-//  Return all attributors and slugs     /quotes/attributions
-//  Return all quotes by attributor      /quotes/attribution/:slug
-//  Return random quote by attributor    /quotes/attribution/:slug/random

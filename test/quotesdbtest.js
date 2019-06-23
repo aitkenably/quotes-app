@@ -4,7 +4,7 @@ const expect = require('chai').expect
 const quotesDb = require('../quotesdb.js')
 
 describe('QuotesDB initialization', function () {
-  //  TODO: Test initialization errors
+  //  TODO: Test initialization errors (wrong fields)
 })
 
 describe('QuotesDB', function () {
