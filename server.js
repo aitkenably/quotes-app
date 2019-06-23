@@ -1,30 +1,38 @@
 'use strict'
-// Needs testing. Needs logging. Needs random support.
-const quotes = require('./quotes.json')
+
+const quotesDb = require('./quotesdb')
 const express = require('express')
 
-const quotesApi = express()
+// TODO: Logging
 
-const port = 8080
+// TODO: Accept csv file from environmental variable
+quotesDb.init('./data/quotes.csv').then(function (db) {
+  const quotesApi = express()
 
-quotesApi.get('/', function (req, res) {
-  res.send("OK")
+  // TODO: Accept port from environmental variable
+  const port = 8080
+
+  // Health check
+  quotesApi.get('/', (req, res) => res.send('OK'))
+
+  quotesApi.get('/quotes', function (req, res) {
+    res.json(db.quotes)
+  })
+
+  quotesApi.get('/quotes/titles', function (req, res) {
+    res.json(db.titles())
+  })
+
+  quotesApi.listen(port, () =>
+    console.log(`Quotes API listening on port ${port}...`))
 })
 
-quotesApi.get('/quotes', function (req, res) {
-  const summary = ({ name, slug }) => ({ name, slug })
-  const cmp = (a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)
-  res.json(quotes.map(q => summary(q)).sort(cmp))
-})
+//  Return random quote                  /quotes/random
 
-quotesApi.get('/quotes/:slug', function (req, res) {
-  const result = quotes.filter(q => q.slug === req.params['slug'])
-  if (result.length <= 0) {
-    res.sendStatus(404)
-  } else {
-    res.json(result[0].quotes)
-  }
-})
+//  Return all titles and slugs          /quotes/titles
+//  Return all quotes by title-slug      /quotes/title/:slug
+//  Return random quote by title-slug    /quotes/title/:slug/random
 
-quotesApi.listen(port, () =>
-  console.log(`Quotes API listening on port ${port}...`))
+//  Return all attributors and slugs     /quotes/attributions
+//  Return all quotes by attributor      /quotes/attribution/:slug
+//  Return random quote by attributor    /quotes/attribution/:slug/random

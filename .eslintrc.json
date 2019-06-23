@@ -2,9 +2,13 @@
     "env": {
         "node": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "mocha": true
     },
     "extends": "standard",
+    "plugins": [
+        "chai-friendly"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -13,5 +17,7 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "no-unused-expressions": 0,
+        "chai-friendly/no-unused-expressions": 2
     }
 }
