@@ -13,7 +13,7 @@ module.exports = function createQuotesRouter (database) {
   router.get('/quotes/title/:slug', function (req, res) {
     const quotes = database.quotesByTitleSlug(req.params.slug)
     if (quotes.length === 0) {
-      res.send(404)
+      res.sendStatus(404)
     } else {
       res.json(quotes)
     }
@@ -24,14 +24,14 @@ module.exports = function createQuotesRouter (database) {
     if (quote) {
       res.json(quote)
     } else {
-      res.send(404)
+      res.sendStatus(404)
     }
   })
 
   router.get('/quotes/attribution/:slug', function (req, res) {
     const quotes = database.quotesByAttributionSlug(req.params.slug)
     if (quotes.length === 0) {
-      res.send(404)
+      res.sendStatus(404)
     } else {
       res.json(quotes)
     }
@@ -42,7 +42,7 @@ module.exports = function createQuotesRouter (database) {
     if (quote) {
       res.json(quote)
     } else {
-      res.send(404)
+      res.sendStatus(404)
     }
   })
 
